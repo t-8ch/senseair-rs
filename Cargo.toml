@@ -1,0 +1,11 @@
+[package]
+name = "senseair"
+description = "Protocol implementations to communicate with Senseair devices"
+version = "0.1.0"
+authors = ["Thomas Weißschuh <thomas@t-8ch.de>"]
+edition = "2018"
+repository = "https://github.com/t-8ch/senseair-rs"
+keywords = ["k30", "co2", "logger", "senseair", "sans-io"]
+license = "Apache-2.0"
+categories = ["embedded", "no-std", "parser-implementations"]
+readme = "README.md"
