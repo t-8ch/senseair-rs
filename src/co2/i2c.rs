@@ -65,6 +65,11 @@ impl ErrorStatus {
             _ => unreachable!(),
         })
     }
+
+    /// Set bit in error message returned by device
+    pub fn error_bit(self) -> u8 {
+        self as u8
+    }
 }
 
 macro_rules! build_command {
