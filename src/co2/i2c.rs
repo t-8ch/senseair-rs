@@ -83,10 +83,11 @@ macro_rules! build_command {
 fn prepare_command(command: CommandType, bytes: u8, address: u16) -> [u8; 4] {
     let command_num = command as u8;
     assert!(command_num < 16);
+    assert!(bytes <= 16);
 
     let address_bytes = address.to_be_bytes();
     let mut request = [
-        (command_num << 4) | bytes,
+        (command_num << 4) | if bytes == 16 { 0 } else { bytes },
         address_bytes[0],
         address_bytes[1],
         0,
