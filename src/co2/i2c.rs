@@ -205,9 +205,7 @@ pub struct Protocol {
 impl Protocol {
     /// Protocol for a device with given characteristics
     pub fn new(characteristics: Characteristics) -> Protocol {
-        Protocol {
-            characteristics,
-        }
+        Protocol { characteristics }
     }
 
     /// Protocol for K30 devices
