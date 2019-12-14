@@ -153,51 +153,55 @@ fn parse_meter_control(data: &[u8; 3]) -> Result<MeterControl> {
     })
 }
 
-/// Tuple of raw command payload and response parser.
-///
-/// First element is the payload to be sent to the device.
-/// Second element is a parser function to process the response from the device.
+/**
+ * Tuple of raw command payload and response parser.
+ *
+ * First element is the payload to be sent to the device.
+ * Second element is a parser function to process the response from the device.
+ */
 pub type Command<T, R> = ([u8; 4], fn(&R) -> Result<T>);
 
-/// Protocol for a specific device
-///
-/// The protocol does *not* provide any IO.
-/// It only provides the raw request payload and parsers for the response data.
-/// You have to use an i2c library (like [i2cdev](https://crates.io/crates/i2cdev)) to perform the
-/// actual I/O.
-///
-/// Example:
-/// ```
-/// # use senseair::co2::i2c::Protocol;
-/// # use std::io::Write;
-/// # use std::io::Read;
-/// # let mut i2c: Vec<u8> = Vec::new();
-/// #
-/// // let i2c = some sort of i2c device
-///
-/// // New protocol
-/// let k30 = Protocol::k30();
-///
-/// // Create command
-/// let (request, cb) = k30.co2_ppm();
-///
-/// assert_eq!(request, [0x22, 0x00, 0x08, 0x2A]);
-///
-/// // Send command to device
-/// i2c.write(&request);
-///
-/// # let mut i2c = vec![0x01, 0x12, 0x34, 0x47];
-/// # let mut i2c = i2c.as_slice();
-/// #
-/// // Read response bytes from i2c device
-/// let mut response = [0; 4];
-/// i2c.read(&mut response);
-///
-/// // Parsing response data
-/// let co2_ppm = cb(&response);
-///
-/// assert_eq!(co2_ppm, Ok(4660));
-/// ```
+/**
+ * Protocol for a specific device
+ *
+ * The protocol does *not* provide any IO.
+ * It only provides the raw request payload and parsers for the response data.
+ * You have to use an i2c library (like [i2cdev](https://crates.io/crates/i2cdev)) to perform the
+ * actual I/O.
+ *
+ * Example:
+ * ```
+ * # use senseair::co2::i2c::Protocol;
+ * # use std::io::Write;
+ * # use std::io::Read;
+ * # let mut i2c: Vec<u8> = Vec::new();
+ * #
+ * // let i2c = some sort of i2c device
+ *
+ * // New protocol
+ * let k30 = Protocol::k30();
+ *
+ * // Create command
+ * let (request, cb) = k30.co2_ppm();
+ *
+ * assert_eq!(request, [0x22, 0x00, 0x08, 0x2A]);
+ *
+ * // Send command to device
+ * i2c.write(&request);
+ *
+ * # let mut i2c = vec![0x01, 0x12, 0x34, 0x47];
+ * # let mut i2c = i2c.as_slice();
+ * #
+ * // Read response bytes from i2c device
+ * let mut response = [0; 4];
+ * i2c.read(&mut response);
+ *
+ * // Parsing response data
+ * let co2_ppm = cb(&response);
+ *
+ * assert_eq!(co2_ppm, Ok(4660));
+ * ```
+ */
 pub struct Protocol {
     characteristics: Characteristics,
 }
