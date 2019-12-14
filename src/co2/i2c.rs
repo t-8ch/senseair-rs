@@ -153,9 +153,10 @@ fn parse_meter_control(data: &[u8; 3]) -> Result<MeterControl> {
     })
 }
 
-/// Tuple of
-/// 1) raw command payload
-/// 3) function that will parse the response data into the final result
+/// Tuple of raw command payload and response parser.
+///
+/// First element is the payload to be sent to the device.
+/// Second element is a parser function to process the response from the device.
 pub type Command<T, R> = ([u8; 4], fn(&R) -> Result<T>);
 
 /// Protocol for a specific device
