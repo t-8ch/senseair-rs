@@ -14,7 +14,8 @@ pub enum Error {
 
 pub type Result<T> = core::result::Result<T, Error>;
 
-struct Characteristics {
+/// Characteristics of a device. Can be used to implement custom device types.
+pub struct Characteristics {
     meter_control_eeprom_address: Option<u16>,
 }
 
@@ -196,17 +197,22 @@ pub type Command<T, R> = ([u8; 4], fn(&R) -> Result<T>);
 /// assert_eq!(co2_ppm, Ok(4660));
 /// ```
 pub struct Protocol {
-    character: Characteristics,
+    characteristics: Characteristics,
 }
 
 impl Protocol {
+    /// Protocol for a device with given characteristics
+    pub fn new(characteristics: Characteristics) -> Protocol {
+        Protocol {
+            characteristics,
+        }
+    }
+
     /// Protocol for K30 devices
     pub fn k30() -> Protocol {
-        Protocol {
-            character: Characteristics {
-                meter_control_eeprom_address: Some(0x3E),
-            },
-        }
+        Protocol::new(Characteristics {
+            meter_control_eeprom_address: Some(0x3E),
+        })
     }
 
     /// Measured CO2 parts per million
@@ -231,7 +237,7 @@ impl Protocol {
 
     /// Meter Control information
     pub fn meter_control(&self) -> Option<Command<MeterControl, [u8; 3]>> {
-        let addr = self.character.meter_control_eeprom_address;
+        let addr = self.characteristics.meter_control_eeprom_address;
         Some(build_command!(
             CommandType::ReadEE,
             1,
