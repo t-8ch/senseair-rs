@@ -5,7 +5,7 @@
 use core::convert::TryInto;
 
 /// Default i2c address after production.
-pub const STANDARD_ADDRESS: u8 = 0x68;
+pub const DEFAULT_ADDRESS: u8 = 0x68;
 /// Address responded to by device disregarding configured address.
 pub const ANY_SENSOR_ADDRESS: u8 = 0x7F;
 
